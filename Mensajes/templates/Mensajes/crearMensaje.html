@@ -1,0 +1,94 @@
+{% extends "Mensajes/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Conversación con {{ usuarioDestino.username }}{% endblock %}
+
+{% block titulo %}<h1>Conversación con {{ usuarioDestino.username }}</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted'>{{ mensaje }}</h5>
+
+
+
+<div id="formuMW" class="formuMW">
+    <div class="container">
+        <div class="row">
+           <div class="col-md-12">
+              <div class="titlepage">
+                 <h3><nobr>{{ usuarioDestino.username }} {% if mensajesNuevos > 0 %}(Mensajes sin leer: {{ mensajesNuevos }}){% endif %}</nobr></h3>
+              </div>
+           </div>
+        </div>        
+        <div id="formuFiltro">
+
+            <table class="tablaConBorde" style="width:90%">
+                <tbody class="tbodyConBorde">
+            {% if mensajes %}
+                    {% for mensaje in mensajes %}
+                        {% if mensaje.emisor == request.user %}
+                        <tr>
+                            <td class="tdConBorde" style="width:20%">&nbsp;</td>
+                            <td class="tdConBordePropio" colspan="2">
+                                {% if mensaje.respuesta_a %}
+                                <p class="respuesta">--> En resp a : {{ mensaje.respuesta_a.texto }}</p>
+                                {% endif %}
+                                {{ mensaje.texto }} <nobr>({{ mensaje.cuando }}) {% if mensaje.mostrar_como_leido %}<img src="/Mensajes/imgs/defaults/dobleTildeAzul.png" width="25"  height="25" alt="Mensaje Leído" />{% endif %}</nobr>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td class="tdConBordeAjeno" colspan="2">
+                                {% if mensaje.respuesta_a %}
+                                <span class="respuesta">--> En resp a : {{ mensaje.respuesta_a.texto }}</span><br />
+                                {% endif %}
+                                {% if not mensaje.mostrar_como_leido %}<span class="sin_leer">{% endif %}
+                                {{ mensaje.texto }} ({{ mensaje.cuando }}) 
+                                {% if not mensaje.mostrar_como_leido %}</span>{% endif %}
+                                <a href="{% url 'ResAUsu' mensaje.emisor.id mensaje.id %}"/><img src="{% static 'Mensajes/images/responder.png' %}" alt="responde" width="28" height="23" /></a>
+                            </td>
+                            <td class="tdConBorde" style="width:20%">&nbsp;</td>
+                        </tr>
+                        {% endif %}                 
+                    {% endfor %}
+            {% endif %}
+            {% if mensajeRespondido %}
+                    <tr><td class="tdConBorde" colspan="3"><center><hr width="90%" /></center></td></tr>
+                    <tr>
+                        <td class="tdConBorde" colspan="3">
+                            <center><span class="respuesta">--> En respuesta a: {{ mensajeRespondido.texto }} - de {{ mensajeRespondido.emisor.username }} ({{ mensajeRespondido.cuando }})</span></center>
+                        </td>
+                    </tr>            
+            {% endif %}
+                    <tr>
+                        <td class="tdConBorde" colspan="3">
+                            <form action="{% url 'MenAUsu' usuarioDestino.id %}" method="post">{% csrf_token %}
+                                <table class="tablaConBordeAncho" style="width:100%">
+                                    <tbody class="tbodyConBorde">
+                                    <tr>
+                                        <td class="tdConBorde" colspan="3">
+                                            <center>{{ form.as_table }}</center>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdConBorde" colspan="3">
+                                            <center>
+                                                <input type="submit" value="Enviar el Mensaje">      
+                                                <input type="button" value="Ir al Centro de Mensajes" onclick="document.location='{% url 'Men' %}';">            
+                                            </center>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

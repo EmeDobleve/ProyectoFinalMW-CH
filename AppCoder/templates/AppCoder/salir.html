@@ -1,0 +1,15 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Saliste del sistema{% endblock %}
+
+{% block titulo %}<h1>Saliste del Sistema. Regresa Pronto.</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+<center><img src="{% static 'AppCoder/images/volver.jpg' %}" width="75%" height="75%" /></center>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}categorias{% endblock %}
+
+{% block titulo %}{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+{% if categorias %}
+<div id="formuMW" class="formuMW">
+    <div class="container">
+        <div class="row">
+           <div class="col-md-12">
+              <div class="titlepage">
+                 <h3>Categorías</h3>
+              </div>
+           </div>
+        </div>        
+        <div id="formuFiltro">
+            <form action="{% url 'CatBus' %}" method="GET">
+                <input type="text" name="categoria" id="categoria" placeholder="Filtrar Categorías" />
+                <input type="submit" value="Filtrar" />
+                {% if filtro %}&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="{% url 'Cat' %}">Remover Filtro "{{ filtro }}"</a>{% endif %}
+                {% if user.is_staff %}&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary" href="{% url 'CatCre' %}">+ Categoría</a>&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+            </form>
+        </div>
+    </div>
+ </div>
+
+<center>
+    <table class="listado">
+        <thead>
+            <tr>
+                <th>Imagen</th>            
+                <th>Nombre</th>
+                
+                <th>&nbsp;{% if user.is_staff %}OPCIONES{% endif %}</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for categoria in categorias %}
+            <tr>
+                <td>
+                    <a href="{% url 'ArtCat' categoria.id %}"><img src="/AppCoder{{ categoria.imagen.url }}" /></a>
+                </td>
+                <td>
+                    {{ categoria.nombre}}
+                </td>
+                <td>&nbsp;
+                    {% if user.is_staff %}
+                    <nobr>
+                        <a class="btn btn-success" href="{% url 'CatEdi' categoria.id  %}">Editar</a>
+                        <a class="btn btn-danger" href="{% url  'CatEli' categoria.id  %}">Eliminar </a>
+                    </nobr>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>        
+            {% endfor %}
+        </tbody>
+    </table>
+</center>
+{% endif %}
+{% endblock %}

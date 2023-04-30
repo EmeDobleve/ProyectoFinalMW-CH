@@ -1,0 +1,16 @@
+{% load static %}
+                              <li class="active"><a class="nav-link" href="{% url 'Ini' %}">Inicio</a></li>
+                              {% if user.is_authenticated and user.is_staff %}
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Cat' %}">Categorías</a></li>
+                              {% endif %}
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Art' %}">Artículos</a></li>
+                              {% if user.is_authenticated %}                              
+                              <li class="nav-item"><a class="logged_username" href="{% url 'Per' user.id %}" alt="Perfil">{{ user.username  }}</a></li>
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Men' %}">Mensajes</a></li>
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Usu' %}">Usuarios</a></li>
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Sal' %}">Salir!</a></li>
+                              {% else %}
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Reg' %}">Registrarse</a></li>
+                              <li class="nav-item"><a class="nav-link" href="{% url 'Ing' %}">Ingresar</a></li>
+                              {% endif %}
+                              <!--<li class="nav-item"><a class="nav-link" href="{% url 'Ing' %}">Contacto</a></li>//-->

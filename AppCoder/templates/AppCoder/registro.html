@@ -1,0 +1,47 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Registro en el sitio{% endblock %}
+
+{% block titulo %}{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+<div id="contact" class="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage">
+                  <h3>Registro de Usuario</h3>
+               </div>
+            </div>
+         </div>        
+       <div class="row">
+        
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 offset-md-3">
+             <div class="contact">
+                
+                <form action="{% url 'Reg' %}" method="post" enctype="multipart/form-data" clas="formuMW">
+                   <div class="row">
+                      <div class="col-sm-12">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                      </div>
+                      <div class="col-sm-12">
+                        <br/>
+                        <center>
+                            <input type="submit" value="Crear Usuario">      
+                        </center>
+                      </div>
+                   </div>
+                </form>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+{% endblock %}

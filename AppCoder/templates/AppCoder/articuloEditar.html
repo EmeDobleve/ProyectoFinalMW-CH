@@ -1,0 +1,34 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Edición de Películas{% endblock %}
+
+{% block titulo %}<h1>Bienvenidos a la pagina de Edición de Artículos!</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+<form action="{% url 'ArtEdi' articulo.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+    <table>
+        <tr>
+            <td>
+                {{ form.as_table }}
+                {{ form.media }}
+            </td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>        
+        <tr>
+            <td colspan = "2">
+                <input type="submit" value="Guardar Cambios">
+                <input type="button" value="Cancelar" onclick="document.location='{% url 'Art' %}';">         
+                <a class="btn btn-danger" href="{% url  'ArtEli' articulo.id  %}">Eliminar </a>
+            </td>
+        </tr>
+    </table>
+    </form>
+
+
+{% endblock %}

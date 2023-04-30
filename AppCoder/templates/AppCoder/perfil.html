@@ -1,0 +1,95 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Perfil {% if usuario %} de {{ usuario.username }} {% else %} Inexistente! {% endif %} {% endblock %}
+
+{% block titulo %}<h1>Perfil {% if usuario %} de {{ usuario.username }} {% else %} Inexistente! {% endif %}</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+{% if usuario %}
+<center>
+<table class="tablaConBorde">
+    <tbody>
+        <tr>
+            <th class="labelMW">Nombre de Usuario:</th>
+            <td class="cabeceraServicios centrado">
+                {{ usuario.username }}
+            </td>
+        </tr>
+        <tr>
+            <th class="labelMW">Avatar:</th>
+            <td>
+                &nbsp;<a href="/AppCoder{{ avatar.imagen.url }}" target="_blank"><img src="/AppCoder/{{ avatar.imagen.url }}" height="200" width="200" /></a>
+            </td>  
+        </tr>
+        <tr>
+            <th class="labelMW">Nombre</th>
+            <td>
+                &nbsp;{{ usuario.first_name }}
+            </td>
+        </tr>
+        <tr>
+            <th class="labelMW">Apellido</th>
+            <td>
+                &nbsp;{{ usuario.last_name }}
+            </td>
+        </tr>         
+        <tr>
+            <th class="labelMW">Email</th>
+            <td>
+                &nbsp;{{ usuario.email }}
+            </td>
+        </tr>        
+        <tr>
+            <th class="labelMW">Página web</th>
+            <td>
+                &nbsp;{% if perfil.web %}<a href="{{ perfil.web }}" target="_blank">{{ perfil.web }}</a>{% endif %}
+            </td>
+        </tr>        
+        <tr>
+            <th class="labelMW">Descripción</th>
+            <td>
+                &nbsp;{{ perfil.descripcion }}
+            </td>
+        </tr>    
+        <tr><td colspan="2">&nbsp;</td></tr>
+        <tr><td colspan="2"><hr widh="100%" /></td></tr>
+        <tr><td colspan="2">&nbsp;</td></tr>
+        {% if user.id == usuario.id %}
+        <tr>
+            <td colspan="2">
+                <center>
+                    <nobr>
+                        <a class="btn btn-success" href="{% url 'PerEdi' user.id  %}">Editar Perfil</a>
+                    </nobr>
+                </center>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">
+                <center>
+                    <nobr>
+                        <a class="btn btn-success" href="{% url 'MenAUsu' usuario.id  %}">Enviar Mensaje (hacerlo)</a>
+                    </nobr>
+                </center>
+            </td>
+        </tr>
+        {% endif %}
+    </tbody>
+</table>
+</center>
+{% else %}
+<table>
+    <tbody>
+        <tr>
+            <th><h1>Usuario Inexistente!</h1></th>
+        </tr>
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

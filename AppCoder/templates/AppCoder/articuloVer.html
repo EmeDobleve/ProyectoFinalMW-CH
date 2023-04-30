@@ -1,0 +1,56 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Artículos{% endblock %}
+
+{% block titulo %}<h1>Las mejores Artículos de Fútbol!</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+ <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+{% if articulo %}
+      <!-- our blog //-->
+      <div id="blog" class="blog">
+            <h1>{{ articulo.titulo }}</h1>
+            <figure>
+                <img src="/AppCoder/{{ articulo.imagen }}" alt="#" />
+                <span>{{ articulo.cuando }}</span>
+                {% if articulo.autor.first_name and articulo.autor.last_name %}
+                    <span>De: {{ articulo.autor.first_name }} {{ articulo.autor.last_name }}</span> 
+                {% else %}
+                    <span>De: {{ articulo.autor.username }}</span> 
+                {% endif %}
+            </figure>
+            {% if user.is_staff %}
+            <center>
+                <nobr>
+                    <a class="btn btn-success" href="{% url 'ArtEdi' articulo.id  %}">Editar</a>
+                    <a class="btn btn-danger" href="{% url  'ArtEli' articulo.id  %}">Eliminar </a>
+                </nobr>
+            </center>
+            <br />
+            {% endif %}
+            <h3>{{ articulo.subtitulo }}</h3>
+            <p>{{ articulo.cuerpo }}</p>
+            {% if articulo.link %}
+            <br />
+            ><a id="linkVerMas" href="{{ articulo.link }}" target="_blank">¿Querés ver un poco más?</a><
+            {% endif %}
+            {% if user.is_staff %}
+            <br />
+            <center>
+                <nobr>
+                    <a class="btn btn-success" href="{% url 'ArtEdi' articulo.id  %}">Editar</a>
+                    <a class="btn btn-danger" href="{% url  'ArtEli' articulo.id  %}">Eliminar </a>
+                </nobr>
+            </center>
+            {% endif %}
+       </div>
+       <br />
+       <a id="nav-volver" href="javascript:history.back()">Volver</a>
+    <!-- end our blog -->
+{% endif %}
+
+{% endblock %}

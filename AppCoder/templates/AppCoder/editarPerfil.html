@@ -1,0 +1,66 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Edición de Perfil: {{ user.username }} {% endblock %}
+
+{% block titulo %}<h1>Editando el perfil de {{ user.username }}!</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+{% if form.errors %}
+<div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+    Hola!!
+    <div id="form_errors">
+        {% for key, value in form.errors.items %}
+            <span class="fieldWrapper">
+                {{ key }}:{{ value }}
+            </span>
+        {% endfor %}
+    </div>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+<form action="{% url 'PerEdi' user.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+
+    <table class="tablaConBorde">
+        <tbody>
+            <tr>
+                <td class="cabeceraServicios centrado" colspan="2">
+                    Editando Perfil de {{ usuario.username }}
+                </td>
+            </tr>
+        <tr>
+            <td>
+                {{ formUsuario.as_table }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ formAvatar.as_table }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ formPerfil.as_table }}
+            </td>
+        </tr>                
+        <tr><td>&nbsp;</td></tr>        
+        <tr>
+            <td colspan = "2">
+                <center>
+                <input type="submit" value="Guardar Cambios">
+                <input type="button" value="Cancelar" onclick="document.location='{% url 'Per' user.id %}';">         
+                </center>
+            </td>
+        </tr>
+    </table>
+    </form>
+
+
+{% endblock %}

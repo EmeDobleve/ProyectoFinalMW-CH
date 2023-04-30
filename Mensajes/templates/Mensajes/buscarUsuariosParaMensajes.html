@@ -1,0 +1,53 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Usuarios{% endblock %}
+
+{% block titulo %}{% endblock %}
+
+{% block contenido_que_cambia %}
+
+<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+<div id="formuMW" class="formuMW">
+    <div class="container">
+        <div class="row">
+           <div class="col-md-12">
+              <div class="titlepage">
+                 <h3>Seleccione el Usuario</h3>
+              </div>
+           </div>
+        </div>        
+        <div id="formuFiltro">
+            <form action="{% url 'MenBusUsu' %}" method="GET"> 
+                <input type="text" name="usuario" id="usuario" placeholder="Filtrar Usuarios" />
+                <input type="submit" value="Filtrar" />
+                {% if filtro %}&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="{% url 'MenBusUsu' %}">Remover Filtro "{{ filtro }}"</a>{% endif %}
+                <input type="button" value="Cancelar" onclick="document.location='{% url 'Men' %}';">     
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+
+{% if usuarios %}
+<center>
+    <table style="min-width:50%">
+        <tbody>
+            {% for usuario in usuarios %}
+            {% if not usuario.id == request.user.id %}
+            <tr>
+                <td><a href="{% url 'MenAUsu' usuario.id %}"><img src="/Mensajes/{{ usuario.avatar.imagen.url }}" height="40" width="40" /></a></td>
+                <td><a href="{% url 'MenAUsu' usuario.id %}">{{ usuario.username }}</a></td>
+                <td><a class="btn btn-success" href="{% url 'MenAUsu' usuario.id %}">Seleccionar</a></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <br />
+    <a id="nav-volver" href="javascript:document.location='{% url 'Men' %}';">Volver</a>    
+</center>
+{% endif %}
+{% endblock %}

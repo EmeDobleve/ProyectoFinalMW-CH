@@ -1,0 +1,72 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block Pagtitulo %}Artículos{% endblock %}
+
+{% block titulo %}<h1>Las mejores Artículos de Fútbol!</h1>{% endblock %}
+
+{% block contenido_que_cambia %}
+
+{% include 'AppCoder/mostrarGaleriaDeCategorias.html' %}
+  
+ <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+ <div id="formuMW" class="formuMW">
+   <div class="container">
+       <div class="row">
+          <div class="col-md-12">
+             <div class="titlepage">
+                <h3>{% if not filtro %}Últimos Artículos.{% else %}Artículos con Filtro: "{{ filtro }}".{% endif %}</h3>
+             </div>
+          </div>
+       </div>        
+       <div id="formuFiltro">
+           <form action="{% url 'ArtBus' %}" method="GET">
+               <input type="text" name="articulo" id="articulo" placeholder="Filtrar artículos" />
+               <input type="submit" value="Filtrar" />
+               {% if filtro %}&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="{% url 'Art' %}">Remover Filtro "{{ filtro }}"</a>{% endif %}
+               {% if user.is_staff %}&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary" href="{% url 'ArtCre' %}">+ Artículo</a>&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}
+           </form>
+       </div>
+   </div>
+</div>
+
+{% if articulos %}
+      <!-- our blog //-->
+      <div id="blog" class="blog">
+        <div class="container">
+           <div class="row">
+                {% for articulo in articulos %}            
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                    <div class="blog-box">
+                        <a href="{% url 'ArtVer' articulo.id  %}">
+                           <figure>
+                              <img src="/AppCoder/{{ articulo.imagen }}" width="600" alt="#" />
+                              <span>{{ articulo.cuando }}</span>
+                           </figure>
+                           <div class="travel">
+                           <span>Post By: {{ articulo.autor.username }}</span> 
+                           </div>
+                           <h3>{{ articulo.titulo }}</h3>
+                           <p>{{ articulo.subtitulo }}</p>
+                        </a>
+                        {% if user.is_staff %}
+                        <center>
+                            <nobr>
+                                <a class="btn btn-success" href="{% url 'ArtEdi' articulo.id  %}">Editar</a>
+                                <a class="btn btn-danger" href="{% url  'ArtEli' articulo.id  %}">Eliminar </a>
+                            </nobr>
+                        </center>
+                        {% endif %}
+                        <br />
+                    </div>
+                </div>
+                {% endfor %}
+           </div>
+        </div>
+    </div>           
+    <!-- end our blog -->
+{% endif %}
+
+{% endblock %}
