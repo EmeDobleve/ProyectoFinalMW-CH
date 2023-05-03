@@ -7,3 +7,4 @@ admin.site.register(Categorias)
 admin.site.register(Articulos)
 admin.site.register(Avatares)
 admin.site.register(Perfiles)
+

@@ -14,3 +14,10 @@ class Mensajes(models.Model):
         cuando = models.DateTimeField(null=False)
         leido = models.BooleanField(null=False, default=False)
         mostrar_como_leido = models.BooleanField(null=False, default=False)
+
+        def __str__(self):
+                return f"({self.cuando}) de {self.emisor.username} a {self.receptor.username}: {self.texto[:60]}"
+
+        class Meta:
+                verbose_name = "Mensaje"
+                verbose_name_plural = "Mensajes"

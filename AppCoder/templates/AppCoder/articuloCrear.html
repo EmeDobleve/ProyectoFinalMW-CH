@@ -2,11 +2,12 @@
 
 {% load static %}
 
-{% block Pagtitulo %}Creación de Películas{% endblock %}
+{% block Pagtitulo %}Creación de Publicaciones{% endblock %}
 
 {% block titulo %}{% endblock %}
 
 {% block contenido_que_cambia %}
+<script type="text/javascript" src="{% static "AppCoder/ckeditor/ckeditor5-build-classic/ckeditor.js" %}"></script>
 
 <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
 
@@ -36,6 +37,7 @@
                         <center>
                             <input type="submit" value="Crear el Artículo">      
                             <input type="button" value="Cancelar" onclick="document.location='{% url 'Art' %}';"> 
+                            <!--<input type="button" value="mostrar" onclick="mostrarLargos()"> //-->
                         </center>
                       </div>
                    </div>
@@ -45,5 +47,37 @@
        </div>
     </div>
  </div>
+
+ <script>
+
+   ClassicEditor
+   .create( document.querySelector( '#id_cuerpo' ), {
+      toolbar: [
+         'undo', 'redo',
+         '|', 'heading',
+         '|', 'bold', 'italic',
+         '|', 'link',
+         '|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+      ]
+      } )
+      .then( editor => {
+         window.editor = editor;
+      } )
+		.catch( err => {
+			console.error( err.stack );
+		} );
+
+      /*
+      function mostrarLargos()      
+      {
+         alert("Título: " + document.getElementById("id_titulo").value.length + ' // ' + document.getElementById("id_titulo").value);
+         alert("SubTítulo: " + document.getElementById("id_subtitulo").value.length + ' // ' + document.getElementById("id_subtitulo").value);
+         alert("Cuerpo: " + document.getElementById("id_cuerpo").innerHTML.length + ' // ' + document.getElementById("id_cuerpo").innerHTML);
+         alert("Imagen: " + document.getElementById("id_imagen").value.length + ' // ' + document.getElementById("id_imagen").value);
+         alert("Categoría: " + document.getElementById("id_categoria").value.length + ' // ' + document.getElementById("id_categoria").value);
+         alert("Link: " + document.getElementById("id_link").value.length + ' // ' + document.getElementById("id_link").value);
+      }
+      */
+</script>
 
 {% endblock %}

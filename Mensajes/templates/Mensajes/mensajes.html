@@ -30,44 +30,44 @@
     </div>
 </div>
 <br />
-{% if mensajes or usuariosAMostrar %}
+{% if mensajes or usuariosAMostrar or conversacionesAMostrar %}
 <center>
     <table>
         <tr>
             <td class="arriba">
-                {% if mensajesNuevos == 0 and not mensaje %}
-                <h5 class='text-muted' id='resaltado'>No tenés mensajes nuevos. Estás al día. =0)</h5>
+                {% if cantMensajesNuevos == 0 and not filtro %}
+                <h5 class='text-muted' id='resaltado'>No tenés mensajes nuevos. Estás al día. =0)</h5><br />
                 {% else %}
-                    {% if mensajesNuevos > 1 %}
-                <h5 class='text-muted' id='resaltado'>Tenés {{ mensajesNuevos }} mensajes nuevos. ¿Por cuál querés empezar?</h5>
-                    {% else %}
-                <h5 class='text-muted' id='resaltado'>Tenés {{ mensajesNuevos }} mensaje nuevo. ¿Querés Responderlo?</h5>    
+                    {% if not filtro or cantMensajesNuevos > 0 %}
+                            <h5 class='text-muted' id='resaltado'>
+                                    Tenés {{ cantMensajesNuevos }} {% if cantMensajesNuevos == 1 %}mensaje nuevo{% else %}mensajes nuevos{% endif %} 
+                                    en {{ cantConversacionesAMostrar }} {% if cantConversacionesAMostrar == 1 %}conversación{% else %}conversaciones{% endif %}.
+                            </h5>
+                            <br />
                     {% endif  %}
                 {% endif  %}
-                <br />
-                {% if mensajes %}
-                <div>
-                {% for mensaje in mensajes %}
-                    <a href="{% url 'Men' %}?usuario={{ mensaje.emisor.username }}" class="usuarioMensajes">{{ mensaje.emisor.username }}:</a> ({{ mensaje.cuando }})
-                    <br/>{{ mensaje.texto }} <a href="{% url 'ResAUsu' mensaje.emisor.id mensaje.id %}"/><img src="{% static 'Mensajes/images/responder.png' %}" alt="responde" width="28" height="23" /></a> <a href="{% url 'MenAUsu' mensaje.emisor.id %}"/>Chat</a>
-                {% endfor %}
-                </div>
+                {% if conversacionesAMostrar %}
+                    <div>
+                    {% for conv in conversacionesAMostrar %}
+                        <a href="{% url 'MenAUsu' conv.usuarioEmisorID %}" class="usuarioMensajes">{{ conv.username }}</a><a href="{% url 'MenAUsu' conv.usuarioEmisorID %}"/> ({{ conv.cantidadSinLeer }} {% if conv.cantidadSinLeer == 1 %}mensaje nuevo{% else %}mensajes nuevos{% endif %})</a><br/>
+                    {% endfor %}
+                    </div>                
                 {% endif %}
             </td>
 
-{% if usuariosAMostrar %}
+    {% if usuariosAMostrar %}
             <td>&nbsp;&nbsp;&nbsp;</td>
             <td class="arriba">
                 <div id="service" class="service">
-                    <span class="green cabeceraServicios"><nobr>Últimos 3 meses</nobr></span>
+                    <span class="green cabeceraServicios"><nobr>Conversaciones (últ. 3 meses)</nobr></span>
                     <br />
                     {% for usu  in usuariosAMostrar %}
-                    -> <a href="{% url 'MenAUsu' usu.id %}"/>{{ usu.username }}</a><br />
+                    -> <a href="{% url 'MenAUsu' usu.usuarioEmisorID %}"/>{{ usu.username }}</a><br />
                     {% endfor %}
                     <br />
                 </div>
             </td>
-{% endif %}
+    {% endif %}
         </tr>
     </table>
 </center>

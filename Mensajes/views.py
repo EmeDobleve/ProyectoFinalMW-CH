@@ -14,19 +14,30 @@ from django.utils.timezone import make_aware
 
 # Create your views here.
 def mensajes(request):
+
         form = MensajesForm()
+        usuariosConConversacionesEnLosUltimos3Meses = obtenerUsuariosDeMensajesUlt3meses(request)
         mensajesSinLeer = obtenerMensajesSinLeerA(request.user.id)
-        usuariosConConversacionesEnLosUltimos3Meses = obtenerUsuariosDeMensajesUlt3meses(request.user.id)
+                
         if ((request.GET) and (request.GET["usuario"] != "")):
                 usuario = request.GET["usuario"]
+
                 mensajesSinLeer = mensajesSinLeer.filter(emisor__username__icontains=usuario)
-                
+                cantMensajesNuevos = len(mensajesSinLeer)
+                mensajesSinLeer = mensajesSinLeer.values("emisor").distinct() 
+                conversacionesAMostrar = obtenerConversacionesSinLeerA(request, mensajesSinLeer)    
+
                 if (len(mensajesSinLeer)>0):
-                        return render(request, "Mensajes/mensajes.html", {"mensajes": mensajesSinLeer, "mensajesNuevos": len(mensajesSinLeer), "filtro": usuario, "usuariosAMostrar": usuariosConConversacionesEnLosUltimos3Meses})
+                        return render(request, "Mensajes/mensajes.html", {"form" : form, "cantMensajesNuevos": cantMensajesNuevos, "filtro": usuario, "cantConversacionesAMostrar": len(conversacionesAMostrar), "usuariosAMostrar": usuariosConConversacionesEnLosUltimos3Meses, "conversacionesAMostrar":conversacionesAMostrar})
                 else:
-                        return render(request, "Mensajes/mensajes.html", {"mensajes": mensajesSinLeer, "mensajesNuevos": len(mensajesSinLeer), "filtro": usuario, "mensaje": "No se encontraron casos que se ajusten al filtro!", "usuariosAMostrar": usuariosConConversacionesEnLosUltimos3Meses})
+                        return render(request, "Mensajes/mensajes.html", {"form" : form, "cantMensajesNuevos": cantMensajesNuevos, "filtro": usuario, "cantConversacionesAMostrar": len(conversacionesAMostrar), "mensaje": "No se encontraron casos que se ajusten al filtro!", "usuariosAMostrar": usuariosConConversacionesEnLosUltimos3Meses, "conversacionesAMostrar":conversacionesAMostrar, "cantConversacionesAMostrar": len(conversacionesAMostrar)})
         else:
-                return render(request, "Mensajes/mensajes.html", {"mensajes": mensajesSinLeer, "mensajesNuevos": len(mensajesSinLeer), "form" : form, "usuariosAMostrar": usuariosConConversacionesEnLosUltimos3Meses})
+
+                cantMensajesNuevos = len(mensajesSinLeer)
+                mensajesSinLeer = mensajesSinLeer.values("emisor").distinct() 
+                conversacionesAMostrar = obtenerConversacionesSinLeerA(request,mensajesSinLeer)    
+                
+                return render(request, "Mensajes/mensajes.html", {"form" : form, "cantMensajesNuevos": cantMensajesNuevos, "cantConversacionesAMostrar": len(conversacionesAMostrar), "usuariosAMostrar": usuariosConConversacionesEnLosUltimos3Meses, "conversacionesAMostrar":conversacionesAMostrar, "cantConversacionesAMostrar": len(conversacionesAMostrar)})
 
 def crearMensaje(request):
         form = MensajesForm()
@@ -107,8 +118,15 @@ def responderMensajeAUsuario(request,id,mensajeId):
         mensajes = obtenerMensajesEntre(request.user.id, usuarioDestino.id)
         return render(request, "Mensajes/crearMensaje.html", {"id": id, "mensajes": mensajes, "mensajesNuevos": contarNuevosYMarcarComoLeidos(mensajes, usuarioDestino.id), "usuarioDestino": usuarioDestino, "form" : form, "mensajeRespondido":mensajeRespondido})
 
-def obtenerMensajesSinLeerA(UsuarioLogueadoID):
-        return Mensajes.objects.filter(receptor__id=UsuarioLogueadoID).filter(leido=False).order_by("-cuando")
+def obtenerMensajesSinLeerA(usuarioReceptorID):
+        #return Mensajes.objects.filter(receptor__id=usuarioReceptorID).filter(leido=False).order_by("-cuando")
+        return Mensajes.objects.filter(receptor__id=usuarioReceptorID).filter(leido=False)
+
+def obtenerMensajesOrdenadosSinLeerA(usuarioReceptorID):
+        return Mensajes.objects.filter(receptor__id=usuarioReceptorID).filter(leido=False).order_by("-cuando")
+
+def obtenerMensajesSinLeerAyDe(usuarioReceptorID, usuarioEmisorID):
+        return Mensajes.objects.filter(receptor__id=usuarioReceptorID).filter(emisor__id=usuarioEmisorID).filter(leido=False).order_by("-cuando")
 
 def obtenerMensajesEntre(UsuarioLogueadoID, UsuarioInteractuaID):
         mensajes = Mensajes.objects.filter(receptor__id__in=[UsuarioInteractuaID, UsuarioLogueadoID]).filter(emisor__id__in=[UsuarioInteractuaID, UsuarioLogueadoID]).exclude(emisor__id=UsuarioLogueadoID, receptor__id=UsuarioLogueadoID).exclude(emisor__id=UsuarioInteractuaID, receptor__id=UsuarioInteractuaID).order_by("cuando")
@@ -118,18 +136,18 @@ def obtenerMensajesEntre(UsuarioLogueadoID, UsuarioInteractuaID):
 def contarNuevosYMarcarComoLeidos(mensajes,usuarioID):
         return mensajes.filter(emisor__id = usuarioID).filter(leido=False).update(leido=True)
 
-def obtenerUsuariosDeMensajesUlt3meses(UsuarioLogueado):
+def obtenerUsuariosDeMensajesUlt3meses(request):
         settings.TIME_ZONE
         hace3Meses = make_aware(datetime.now() - relativedelta(months=3))
-        ult3MesesComoReceptor = Mensajes.objects.filter(receptor=UsuarioLogueado).filter(cuando__gte = hace3Meses).values("emisor").distinct() 
-        ult3MesesComoEmisor = Mensajes.objects.filter(emisor=UsuarioLogueado).filter(cuando__gte = hace3Meses).values("receptor").exclude(receptor__in=ult3MesesComoReceptor).distinct()
+        ult3MesesComoReceptor = Mensajes.objects.filter(receptor=request.user.id).filter(cuando__gte = hace3Meses).values("emisor").distinct() 
+        ult3MesesComoEmisor = Mensajes.objects.filter(emisor=request.user.id).filter(cuando__gte = hace3Meses).values("receptor").exclude(receptor__in=ult3MesesComoReceptor).distinct()
         
         usuariosUlt3Meses = []
         for usu in ult3MesesComoReceptor:
-                usuariosUlt3Meses.append({'id': usu["emisor"], 'username': User.objects.filter(id=usu["emisor"])[0].username})
+                usuariosUlt3Meses.append({'usuarioEmisorID': usu["emisor"], 'username': User.objects.filter(id=usu["emisor"])[0].username})
         
         for usu in ult3MesesComoEmisor:
-                usuariosUlt3Meses.append({'id': usu["receptor"], 'username': User.objects.filter(id=usu["receptor"])[0].username})                
+                usuariosUlt3Meses.append({'usuarioEmisorID': usu["receptor"], 'username': User.objects.filter(id=usu["receptor"])[0].username})                
 
         usuariosUlt3Meses.sort(key=usernameDe)
 
@@ -139,4 +157,11 @@ def obtenerUsuariosDeMensajesUlt3meses(UsuarioLogueado):
 def usernameDe(dicc):
         return dicc["username"]
 
+def obtenerConversacionesSinLeerA(request,conversaciones):
+        conversacionesSinLeer = []
+        for usu in conversaciones:
+                conversacionesSinLeer.append({'usuarioEmisorID': usu["emisor"], 'username': User.objects.filter(id=usu["emisor"])[0].username, "cantidadSinLeer":len(obtenerMensajesSinLeerAyDe(request.user.id,usu["emisor"]))})
+
+        conversacionesSinLeer.sort(key=usernameDe)
+        return (conversacionesSinLeer)
 

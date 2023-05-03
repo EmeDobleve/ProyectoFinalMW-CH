@@ -130,3 +130,29 @@ LOGIN_URL = '/AppCoder/login/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CKEDITOR_BASEPATH = "/AppCoder/ckeditor/ckeditor5-build-classic/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+				'undo', 'redo',
+				'|', 'heading',
+				'|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+				'|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+				'|', 'link', 'blockQuote', 'codeBlock',
+				'|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
+		],
+        'height': 300,
+        'width': 660,
+        'skin': 'moono-lisa',
+        'uiColor': '#b7d6ec',
+    },
+}
+
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_UPLOAD_SLUGIFY_FILENAME = False
+CKEDITOR_IMAGE_BACKEND = None
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+

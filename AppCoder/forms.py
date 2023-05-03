@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from AppCoder.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from ckeditor.widgets import CKEditorWidget
 
 class CategoriaForm(forms.Form):
     nombre = forms.CharField(max_length=40)
@@ -12,7 +13,7 @@ class CategoriaForm(forms.Form):
 class ArticuloForm(forms.Form):
         titulo = forms.CharField(max_length=120)
         subtitulo = forms.CharField(max_length=255)
-        cuerpo = forms.CharField(max_length=4000,label="Cuerpo", required=True, widget=forms.Textarea(attrs={"rows":"5","cols":"60"}))
+        cuerpo = forms.CharField(label="Cuerpo", required=False,  widget = CKEditorWidget()) #widget=forms.Textarea(attrs={"rows":"5","cols":"60"}))
         imagen = forms.ImageField(max_length=100,allow_empty_file=False)
         #autor=forms.ModelChoiceField(queryset=User.objects.all())
         #cuando = models.DateTimeField(null=False)

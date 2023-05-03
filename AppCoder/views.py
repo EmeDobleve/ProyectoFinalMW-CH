@@ -1,7 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import Template, Context, loader
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from AppCoder.models import *
 from .forms import CategoriaForm, ArticuloForm, RegistroUsuarioForm, ModificoUsuarioForm, ModificoAvatarForm, ModificoPerfilForm
@@ -15,7 +13,8 @@ from django.utils.timezone import make_aware
 # Create your views here.
 
 def inicio(request):
-        return render(request, "AppCoder/inicio.html")
+        articulos = Articulos.objects.all().order_by("-cuando")[:4]
+        return render(request, "AppCoder/inicio.html", {"articulos":articulos})
 
 def contacto(request):
         return render(request, "AppCoder/contacto.html")
@@ -101,7 +100,7 @@ def categoriaEliminar(request, id):
 def articulos(request):
         form = ArticuloForm()
         articulos = Articulos.objects.all().order_by("-cuando")#[:4]
-        categorias = list(Categorias.objects.all())#[:6]
+        categorias = list(Categorias.objects.all())[:10]
         categoriasList = list(categorias)
         return render(request, "AppCoder/articulos.html", {"articulos": articulos, "form" : form, "categorias": categoriasList})
 
@@ -127,6 +126,7 @@ def articuloCrear(request):
                 articulo = Articulos()
                 articulo.titulo = form.cleaned_data['titulo']
                 articulo.subtitulo = form.cleaned_data['subtitulo']
+                #articulo.cuerpo = form.cleaned_data['cuerpo']
                 articulo.cuerpo = form.cleaned_data['cuerpo']
                 articulo.imagen = form.cleaned_data['imagen']   
                 articulo.link = form.cleaned_data['link']
@@ -252,7 +252,8 @@ def login_request(request):
                         
                         if user is not None:
                                 login(request, user)
-                                return render(request, "AppCoder/inicio.html", {"mensaje":f"Bienvenido {usuario}"})
+                                articulos = Articulos.objects.all().order_by("-cuando")[:4]
+                                return render(request, "AppCoder/inicio.html", {"mensaje":f"Bienvenido {usuario} a La Rendonda!", "articulos":articulos})
                         else:
                                 form = AuthenticationForm()
                                 return render(request, "AppCoder/login.html", {"form": form, "mensaje":"Usuario o Contraseña incorrectos"})
@@ -274,7 +275,8 @@ def register(request):
                 if form.is_valid():  # Si pasó la validación de Django
                         usuario = form.cleaned_data.get('username')
                         form.save()
-                        return render(request, "AppCoder/inicio.html", {"mensaje":f"Usuario {usuario} creado correctamente!"})
+                        articulos = Articulos.objects.all().order_by("-cuando")[:4]
+                        return render(request, "AppCoder/inicio.html", {"articulos":articulos,"mensaje":f"Usuario {usuario} creado correctamente!"})
                 else:
                         return render(request, "AppCoder/registro.html", {"form": form, "mensaje":"Error al crear el nuevo usuario."})
         else:

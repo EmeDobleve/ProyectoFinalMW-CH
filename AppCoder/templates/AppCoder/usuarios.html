@@ -40,7 +40,7 @@
             <tr>
                 <td><a href="/AppCoder/{{ usuario.avatar.imagen.url }}" target="_blank"><img src="/AppCoder/{{ usuario.avatar.imagen.url }}" height="40" width="40" /></a></td>
                 <td><a href="{% url 'MenAUsu' usuario.id %}">{{ usuario.username }}</a></td>
-                <td>
+                <td class="opciones">
                     <nobr>
                         <a class="btn btn-success" href="{% url 'Per' usuario.id %}">Perfil</a>
                         {% if not usuario == request.user %}<a class="btn btn-success" href="{% url 'MenAUsu' usuario.id %}">Mensajes</a>{% endif %}

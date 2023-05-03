@@ -26,7 +26,6 @@
 @import url(font-awesome.min.css);
 @import url(meanmenu.css);
 @import url(owl.carousel.min.css);
-@import url(swiper.min.css);
 @import url(slick.css);
 @import url(jquery.fancybox.min.css);
 @import url(jquery-ui.css);
@@ -2466,6 +2465,7 @@ ul.contant_icon li img {
   .tdConBorde{
 	border: 0px solid black;
 	border-collapse: none;
+	text-align: center;
   }
   
   .tdConBordePropio{
@@ -2527,3 +2527,12 @@ ul.contant_icon li img {
 	border-collapse: none;
 	border-radius: 20px;
   }
+
+.opciones {
+	line-height: 60px;
+}
+
+#cuerpoPublicacion {
+	padding: 10px;
+	text-align: justify;
+}

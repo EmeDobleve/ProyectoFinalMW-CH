@@ -43,7 +43,7 @@
                         <a href="{% url 'ArtVer' articulo.id  %}">
                            <figure>
                               <img src="/AppCoder/{{ articulo.imagen }}" width="600" alt="#" />
-                              <span>{{ articulo.cuando }}</span>
+                              <span>{{ articulo.cuando|date:"d/m/y" }} {{ articulo.cuando|time:"H:i" }}</span>
                            </figure>
                            <div class="travel">
                            <span>Post By: {{ articulo.autor.username }}</span> 

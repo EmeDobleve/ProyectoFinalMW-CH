@@ -7,6 +7,7 @@
 {% block titulo %}<h1>Bienvenidos a la pagina de Edición de Artículos!</h1>{% endblock %}
 
 {% block contenido_que_cambia %}
+<script type="text/javascript" src="{% static "AppCoder/ckeditor/ckeditor5-build-classic/ckeditor.js" %}"></script>
 
 <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
 
@@ -30,5 +31,15 @@
     </table>
     </form>
 
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#id_cuerpo' ) )
+            .then( editor => {
+                window.editor = editor;
+            } )
+            .catch( err => {
+                console.error( err.stack );
+            } );
+    </script>
 
 {% endblock %}

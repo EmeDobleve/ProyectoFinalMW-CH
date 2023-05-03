@@ -2,12 +2,29 @@
 
 {% load static %}
 
-{% block Pagtitulo %}Inicio{% endblock %}
+{% block Pagtitulo %}Acerca De Mí!{% endblock %}
 
-{% block titulo %}<h1>Página del Acerca De Mí!</h1>{% endblock %}
+{% block titulo %}<h1>Acerca De Mí!</h1>{% endblock %}
 
 {% block contenido_que_cambia %}
 
-<h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+ <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
+
+<div id="blog" class="blog">
+    <h1>¿Quién soy?</h1>
+    <figure>
+        <img src="{% static 'AppCoder/images/MW2023.jpg' %}" alt="#" />
+    </figure>
+    <center>
+        <span>Mi nombre es <b>Martín Waisburd</b>, soy <b>Analista Universitario de Sistemas</b> y me gusta seguir aprendiendo.
+        <br />A lo largo de carrera, fui pasando por diversas áreas de Sistemas.
+        <br />He sido analista y programador de diferentes entornos y lenguajes.
+        <br />Hoy me desempeño formalmente como <b>Líder de Equipos</b>, y me gusta mantenerme actualizado y poder acompañar a mis equipos desde el rol que me toque a cada momento.
+        <br />Entiendo que <b>Python</b> es hoy "el lenguaje" y por eso estoy aprendiéndolo.
+    </center>
+</span>
+</div>
+<br />
+<!--<a id="nav-volver" href="javascript:history.back()">Volver</a>//-->
 
 {% endblock %}

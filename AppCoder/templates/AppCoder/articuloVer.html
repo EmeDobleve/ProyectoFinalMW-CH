@@ -16,7 +16,7 @@
             <h1>{{ articulo.titulo }}</h1>
             <figure>
                 <img src="/AppCoder/{{ articulo.imagen }}" alt="#" />
-                <span>{{ articulo.cuando }}</span>
+                <span>{{ articulo.cuando|date:"d/m/y" }} {{ articulo.cuando|time:"H:i" }}</span>
                 {% if articulo.autor.first_name and articulo.autor.last_name %}
                     <span>De: {{ articulo.autor.first_name }} {{ articulo.autor.last_name }}</span> 
                 {% else %}
@@ -33,7 +33,7 @@
             <br />
             {% endif %}
             <h3>{{ articulo.subtitulo }}</h3>
-            <p>{{ articulo.cuerpo }}</p>
+            <div id="cuerpoPublicacion"></div>
             {% if articulo.link %}
             <br />
             ><a id="linkVerMas" href="{{ articulo.link }}" target="_blank">¿Querés ver un poco más?</a><
@@ -49,8 +49,12 @@
             {% endif %}
        </div>
        <br />
-       <a id="nav-volver" href="javascript:history.back()">Volver</a>
+       <a id="nav-volver" href="{% url 'Art' %}">Volver</a>
     <!-- end our blog -->
+
+    <script>
+        document.getElementById("cuerpoPublicacion").outerHTML = '<div id="cuerpoPublicacion">{{ articulo.cuerpo | safe }}</div>'
+    </script>
 {% endif %}
 
 {% endblock %}

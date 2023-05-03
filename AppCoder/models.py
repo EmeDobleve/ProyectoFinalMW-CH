@@ -27,7 +27,8 @@ class Articulos(models.Model):
         titulo = models.CharField(max_length=120)
         subtitulo = models.CharField(max_length=255)
         #cuerpo = models.CharField(max_length=4000)
-        cuerpo = RichTextField()
+        #cuerpo = RichTextField()
+        cuerpo = RichTextField(blank=True, null=True)
         imagen = models.ImageField(
             upload_to='imgs/pub/'
             , height_field=None
