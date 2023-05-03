@@ -99,7 +99,7 @@ def categoriaEliminar(request, id):
 
 def articulos(request):
         form = ArticuloForm()
-        articulos = Articulos.objects.all().order_by("-cuando")#[:4]
+        articulos = Articulos.objects.all().order_by("-cuando")[:6]
         categorias = list(Categorias.objects.all())[:10]
         categoriasList = list(categorias)
         return render(request, "AppCoder/articulos.html", {"articulos": articulos, "form" : form, "categorias": categoriasList})
@@ -142,7 +142,8 @@ def articuloCrear(request):
                 form = ArticuloForm()
                 categorias = list(Categorias.objects.all())#[:6]
                 categoriasList = list(categorias)                       
-                articulos = Articulos.objects.all() 
+                #articulos = Articulos.objects.all() 
+                articulos = Articulos.objects.all().order_by("-cuando")[:6]
                 return render(request, "AppCoder/articulos.html", {"articulos": articulos, "categorias": categoriasList, "mensaje":"Articulo dado de alta satisfactoriamente!"})
         else:
                 formulario= ArticuloForm(initial={
@@ -187,9 +188,10 @@ def articuloEditar(request, id):
 
                 articulo.save()
 
-                articulos = Articulos.objects.all()
                 form = ArticuloForm()
                 categorias = list(Categorias.objects.all())#[:6]
+                #articulos = Articulos.objects.all()
+                articulos = Articulos.objects.all().order_by("-cuando")[:6]
                 categoriasList = list(categorias)                       
                 return render(request, "AppCoder/articulos.html" ,{"articulos":articulos, "categorias": categoriasList, "form": form, "mensaje": "Artículo editado correctamente"})
         else:

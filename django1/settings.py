@@ -119,7 +119,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/AppCoder/static/'
 MEDIA_ROOT = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR , 'uploads')
 #LOGOUT_REDIRECT_URL = '/AppCoder/inicio/'
@@ -131,22 +131,21 @@ LOGIN_URL = '/AppCoder/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CKEDITOR_BASEPATH = "/AppCoder/ckeditor/ckeditor5-build-classic/"
+#CKEDITOR_BASEPATH = STATIC_URL + "AppCoder/ckeditor/ckeditor/"
+#CKEDITOR_BASEPATH = "/AppCoder/static/Appcoder/ckeditor/ckeditor5-build-classic/"
+#CKEDITOR_BASEPATH = os.path.join(os.path.dirname(STATIC_URL), 'AppCoder/ckeditor/ckeditor5-build-classic/')
+CKEDITOR_BASEPATH = os.path.join(os.path.dirname(STATIC_URL), 'AppCoder/ckeditor/ckeditor/')
 
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
-				'undo', 'redo',
-				'|', 'heading',
-				'|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-				'|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-				'|', 'link', 'blockQuote', 'codeBlock',
-				'|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
-		],
-        'height': 300,
-        'width': 660,
-        'skin': 'moono-lisa',
+            'undo', 'redo',
+            '|', 'heading',
+            '|', 'bold', 'italic',
+            '|', 'link',
+            '|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+        ],
         'uiColor': '#b7d6ec',
     },
 }

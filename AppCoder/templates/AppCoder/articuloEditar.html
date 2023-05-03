@@ -33,7 +33,15 @@
 
     <script>
         ClassicEditor
-            .create( document.querySelector( '#id_cuerpo' ) )
+            .create( document.querySelector( '#id_cuerpo' ), {
+                toolbar: [
+                   'undo', 'redo',
+                   '|', 'heading',
+                   '|', 'bold', 'italic',
+                   '|', 'link',
+                   '|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+                ]
+            } )
             .then( editor => {
                 window.editor = editor;
             } )
