@@ -11,25 +11,43 @@
 
 <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
 
-<form action="{% url 'ArtEdi' articulo.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+    <div id="contact" class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                   <div class="titlepage">
+                      <h3>Edición de un Artículo</h3>
+                   </div>
+                </div>
+             </div>        
+           <div class="row">
+            
+              <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 offset-md-3">
+                 <div class="contact">
+                    
+                    <form action="{% url 'ArtEdi' articulo.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                       <div class="row">
+                          <div class="col-sm-12">
+                            {% csrf_token %}
+                            {{ form.as_div }}
+                            {{ form.media }}
+                          </div>
+                          <div class="col-sm-12">
+                            <br/>
+                            <center>
+                                <input type="submit" value="Guardar Cambios">      
+                                <input type="button" value="Cancelar" onclick="document.location='{% url 'Art' %}';"> 
+                                <a class="btn btn-danger" href="{% url  'ArtEli' articulo.id  %}">Eliminar </a>
+                            </center>
+                          </div>
+                       </div>
+                    </form>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
 
-    <table>
-        <tr>
-            <td>
-                {{ form.as_table }}
-                {{ form.media }}
-            </td>
-        </tr>
-        <tr><td>&nbsp;</td></tr>        
-        <tr>
-            <td colspan = "2">
-                <input type="submit" value="Guardar Cambios">
-                <input type="button" value="Cancelar" onclick="document.location='{% url 'Art' %}';">         
-                <a class="btn btn-danger" href="{% url  'ArtEli' articulo.id  %}">Eliminar </a>
-            </td>
-        </tr>
-    </table>
-    </form>
 
     <script>
         ClassicEditor

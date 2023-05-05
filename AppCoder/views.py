@@ -8,6 +8,7 @@ from datetime import datetime
 from django.contrib import messages 
 from django.conf import settings
 from django.utils.timezone import make_aware
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -67,7 +68,7 @@ def categoriaCrear(request):
 @login_required()
 def categoriaEditar(request, id):
     categorias=Categorias.objects.all()
-    categoria=Categorias.objects.get(id=id)
+    categoria = get_object_or_404(Categorias, id=id)
     if request.method=="POST":
         form= CategoriaForm(request.POST, request.FILES)
 
@@ -96,7 +97,9 @@ def categoriaEditar(request, id):
 
 @login_required()
 def categoriaEliminar(request, id):
-        categoria=Categorias.objects.get(id=id)
+        #categoria=Categorias.objects.get(id=id)
+        categoria = get_object_or_404(Categorias, id=id)
+
         #acá
         if (categoria):
                 categoria.imagen.delete()        
@@ -233,7 +236,7 @@ def articuloVer(request, id):
 
 @login_required()
 def articuloEliminar(request, id):
-        print("hola 1!!!")
+        #print("hola 1!!!")
         articulo = Articulos.objects.get(id=id)
         #acá
         articulo.imagen.delete()
@@ -380,8 +383,8 @@ def editarPerfil(request, id):
 
 
                 if (not(request.FILES and request.FILES['imagen'])):
-                        print(avatar.imagen)
-                        print(avatar.imagen.url)
+                        #print(avatar.imagen)
+                        #print(avatar.imagen.url)
                         request.FILES["imagen"] = avatar.imagen
 
                 if form.is_valid() and formPerfil.is_valid() and formAvatar.is_valid():

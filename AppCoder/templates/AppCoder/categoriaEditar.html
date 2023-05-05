@@ -10,24 +10,41 @@
 
 <h5 class='text-muted' id='resaltado'>{{ mensaje }}</h5>
 
-<form action="{% url 'CatEdi' categoria.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
-
-    <table>
-        <tr>
-            <td>
-                {{ form.as_table }}
-            </td>
-        </tr>
-        <tr><td>&nbsp;</td></tr>        
-        <tr>
-            <td colspan = "2">
-                <input type="submit" value="Guardar Cambios">
-                <input type="button" value="Cancelar" onclick="document.location='{% url 'Cat' %}';">   
-                <a class="btn btn-danger" href="{% url  'CatEli' categoria.id  %}">Eliminarla</a>      
-            </td>
-        </tr>
-    </table>
-    </form>
-
+           
+<div id="contact" class="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div class="titlepage">
+                  <h3>Editar una Categorías</h3>
+               </div>
+            </div>
+         </div>        
+       <div class="row">
+        
+          <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 offset-md-3">
+             <div class="contact">
+                
+                <form action="{% url 'CatEdi' categoria.id %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                   <div class="row">
+                      <div class="col-sm-12">
+                        {% csrf_token %}
+                        {{ form.as_div }}
+                      </div>
+                      <div class="col-sm-12">
+                        <br/>
+                        <center>
+                            <input type="submit" value="Guardar Cambios">      
+                            <input type="button" value="Cancelar" onclick="document.location='{% url 'Cat' %}';"> 
+                            <a class="btn btn-danger" href="{% url  'CatEli' categoria.id  %}">Eliminarla</a>      
+                        </center>
+                      </div>
+                   </div>
+                </form>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
 
 {% endblock %}
