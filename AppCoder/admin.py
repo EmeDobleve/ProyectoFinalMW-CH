@@ -13,6 +13,15 @@ class ArticulosAdmin(admin.ModelAdmin):
 
     display_cuerpo.short_description = 'Cuerpo'
 
+class ArticulosAdmin2(admin.ModelAdmin):
+    list_display = ('titulo', 'subtitulo', 'cuerpo_textarea',
+                    'autor', 'cuando', 'categoria')
+    search_fields = ['titulo']
+
+    def cuerpo_textarea(self, obj):
+        return format_html("<textarea>" + obj.cuerpo[:400] + "</textarea>")
+
+    cuerpo_textarea.short_description = 'Cuerpo'
 
 # Register your models here.
 admin.site.register(Categorias)

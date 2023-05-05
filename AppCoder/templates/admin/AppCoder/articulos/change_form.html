@@ -1,0 +1,44 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block extrahead %}
+    <script type="text/javascript" src="{% static "AppCoder/ckeditor/ckeditor5-build-classic/ckeditor.js" %}"></script>
+{% endblock %}
+
+{% block object-tools-items %}
+
+    {{ block.super }}
+
+{% endblock %}
+
+
+{% block footer %}
+
+
+<script type="text/javascript">
+
+    // code to actually use jQuery here...
+
+    ClassicEditor
+            .create( document.querySelector( '#id_cuerpo' ), {
+            toolbar: [
+            'undo', 'redo',
+            '|', 'heading',
+            '|', 'bold', 'italic',
+            '|', 'link',
+            '|', 'bulletedList', 'numberedList', 'outdent', 'indent'
+        ],
+        languages : {
+            'es-mx' : 1
+        }
+        } )
+        .then( editor => {
+            window.id_cuerpo = id_cuerpo;
+        } )
+        .catch( err => {
+            console.error( err.stack );
+        } );
+    </script>    
+
+{% endblock %}

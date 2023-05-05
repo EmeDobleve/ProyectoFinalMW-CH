@@ -66,6 +66,7 @@ def categoriaCrear(request):
     
 @login_required()
 def categoriaEditar(request, id):
+    categorias=Categorias.objects.all()
     categoria=Categorias.objects.get(id=id)
     if request.method=="POST":
         form= CategoriaForm(request.POST, request.FILES)
@@ -74,12 +75,17 @@ def categoriaEditar(request, id):
               request.FILES["imagen"] = categoria.imagen
 
         if form.is_valid():
+                
                 info=form.cleaned_data
+                
+                #acá
+                if (info["imagen"]!= '' and info["imagen"]!=categoria.imagen):
+                        categoria.imagen.delete()
+                
                 categoria.nombre=info["nombre"]
                 categoria.imagen=info["imagen"]
                 categoria.save()
-                categorias=Categorias.objects.all()
-                form = CategoriaForm()
+                form = form.full_clean()
                 return render(request, "AppCoder/categorias.html" ,{"categorias":categorias, "form": form, "mensaje": "Categoría editada satisfactoriamente"})
         else:
                 formulario= CategoriaForm(initial={"nombre":form.cleaned_data['nombre'], "descripcion":form.cleaned_data['descripcion']})
@@ -90,7 +96,10 @@ def categoriaEditar(request, id):
 
 @login_required()
 def categoriaEliminar(request, id):
-        categoria = Categorias.objects.filter(id=id)
+        categoria=Categorias.objects.get(id=id)
+        #acá
+        if (categoria):
+                categoria.imagen.delete()        
         categoria.delete()
         
         categorias=Categorias.objects.all() 
@@ -179,7 +188,9 @@ def articuloEditar(request, id):
                 articulo.subtitulo = form.cleaned_data['subtitulo']
                 articulo.cuerpo = form.cleaned_data['cuerpo']
 
-                if (form.cleaned_data["imagen"]!= ''):
+                #acá
+                if (form.cleaned_data["imagen"]!= '' and form.cleaned_data["imagen"]!=articulo.imagen):
+                        articulo.imagen.delete()
                         articulo.imagen=form.cleaned_data["imagen"]
 
                 articulo.link = form.cleaned_data['link']
@@ -222,7 +233,10 @@ def articuloVer(request, id):
 
 @login_required()
 def articuloEliminar(request, id):
-        articulo = Articulos.objects.filter(id=id)
+        print("hola 1!!!")
+        articulo = Articulos.objects.get(id=id)
+        #acá
+        articulo.imagen.delete()
         articulo.delete()
         articulos = Articulos.objects.all().order_by("-cuando")
         form = ArticuloForm()
